@@ -1,21 +1,25 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about\
-    \ Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).\
-    \  For this sample, you can use the api key `special-key` to test the authorization\
-    \ filters."
-  version: "1.0.5"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
+  description: "This is API of a rythme game calls \"Group Rei\".\n
+  It is for our school project"
+  version: "0.0.0"
+  title: "Group Rei"
+  termsOfService: "https://github.com/ericchang922"
   contact:
-    email: "apiteam@swagger.io"
+    email: "ericchang922@gmail.com"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
+host: "http://localhost"
+basePath: "/v0"
 tags:
+- name: "account"
+  description: "包含登入及帳號管理等功能"
+  externalDocs: 
+    description: "參考資料"
+    url: "https://google.com/"
+  
 - name: "pet"
   description: "Everything about your Pets"
   externalDocs:
@@ -32,6 +36,40 @@ schemes:
 - "https"
 - "http"
 paths:
+
+# 帳號
+  /login:
+    post: # 種類
+      tags: # 分類的標籤
+      - "account"
+      summary: "使用者登入" # 摘要
+      description: "" #細節
+      operationId: "login"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+      - name: "body"
+        in: "body"
+        description: "傳出帳號密碼，密碼使用MD5"
+        required: true
+        schema: 
+          $ref: "#/definitions/LoginData"
+      responses: # 回傳
+        200: # 成功
+          description: "login successful"
+          schema: 
+            $ref: "#/definitions/UserData"
+        400:
+          description: "login failed"
+          schema: 
+            $ref: "#/definitions/BadRequest"
+            
+      security:
+        - rei_auth:
+          - "read:account"
+  
   /pet/{petId}/uploadImage:
     post:
       tags:
@@ -80,7 +118,6 @@ paths:
       - "application/json"
       - "application/xml"
       produces:
-      - "application/json"
       - "application/xml"
       parameters:
       - in: "body"
@@ -593,7 +630,44 @@ securityDefinitions:
     scopes:
       read:pets: "read your pets"
       write:pets: "modify pets in your account"
+      
+# schema
 definitions:
+  BadRequest: # 錯誤格式
+    type: "object"
+    properties: 
+      statusCode:
+        type: "integer"
+        format: "int"
+      failedMsg:
+        type: "string"
+  LoginData: # 帳號密碼
+    type: "object"
+    properties: 
+      uid:
+        type: "string"
+      password:
+        type: "string"
+  UserData: # 使用者資料
+    type: "object"
+    properties: 
+      name:
+        type: "string"
+      birthday:
+        type: "datetime"
+        format: "date"
+      phone:
+        type: "string"
+      memberLevel:
+        type: "integer"
+        format: "int"
+        description: "金銀銅..."
+      mail:
+        type: "string"
+  
+      
+        
+    
   ApiResponse:
     type: "object"
     properties:
