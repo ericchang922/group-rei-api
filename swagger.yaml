@@ -57,7 +57,38 @@ paths:
       security:
         - rei_auth:
           - "read:account"
+  
+  /logout:
+    post: # 種類
+      tags: # 分類的標籤
+        - "account"
+      summary: "使用者登出" # 摘要
+      description: "" #細節
+      operationId: "logout"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "傳出帳號密碼，密碼使用MD5"
+          required: true
+          schema:
+            $ref: "#/definitions/LogoutData"
+      responses: # 回傳
+        200: # 成功
+          description: "logout successful"
+          schema:
+            $ref: "#/definitions/UserState"
+        400:
+          description: "logout failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
 
+      security:
+        - rei_auth:
+            - "read:account"
 
 securityDefinitions:
   api_key:
@@ -104,6 +135,20 @@ definitions:
         format: "int"
         description: "金銀銅..."
       mail:
+        type: "string"
+  LogoutData:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      token:
+        type: "string"
+  UserState:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+      stateMessage:
         type: "string"
 
 externalDocs:
