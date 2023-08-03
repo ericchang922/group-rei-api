@@ -19,14 +19,18 @@ tags:
   externalDocs: 
     description: "參考資料"
     url: "https://google.com/"
-
+- name: "pool"
+  description: "抽卡相關的功能"
+  externalDocs:
+    description: "參考資料"
+    url: "https://google.com/"
 schemes:
 - "https"
 - "http"
 paths:
 
 # 帳號
-  /login: # 登入
+  /account/login: # 登入
     post: # 種類
       tags: # 分類的標籤
       - "account"
@@ -58,7 +62,7 @@ paths:
         - rei_auth:
           - "read:account"
   
-  /logout:
+  /account/logout:
     post: # 種類
       tags: # 分類的標籤
         - "account"
@@ -83,6 +87,38 @@ paths:
             $ref: "#/definitions/UserState"
         400:
           description: "logout failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+      security:
+        - rei_auth:
+            - "read:account"
+
+  /pool/purchase:
+    post: # 種類
+      tags: # 分類的標籤
+        - "pool"
+      summary: "抽卡" # 摘要
+      description: "" #細節
+      operationId: "gacha"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "進行單抽或十連抽"
+          required: true
+          schema:
+            $ref: "#/definitions/PurchaseData"
+      responses: # 回傳
+        200: # 成功
+          description: "gacha successful"
+          schema:
+            $ref: "#/definitions/PurchaseResult"
+        400:
+          description: "gacha failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -150,6 +186,35 @@ definitions:
         type: "string"
       stateMessage:
         type: "string"
+  PurchaseData:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      gachaId:
+        type: "integer"
+        format: "int"
+      starCandy:
+        type: "integer"
+        format: "int"
+      gachaCount:
+        type: "integer"
+        format: "int"
+      onceSpend:
+        type: "integer"
+        format: "int"
+  PurchaseResult:
+    type: "object"
+    properties:
+      propName:
+        type: "string"
+      propClass:
+        type: "string"
+      propNumber:
+        type: "integer"
+        format: "int"
 
 externalDocs:
   description: "Find out more about Swagger"
