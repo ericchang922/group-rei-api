@@ -229,12 +229,14 @@ definitions:
       token:
         type: "string"
       itemsInfo:
-        type: "object"
-        properties:
-          itemId:
-            type: "string"
-          quentity:
-            type: "integer"
+        type: "array"
+        items: 
+          type: "object"
+          properties:
+            itemId:
+              type: "string"
+            quantity:
+              type: "integer"
       class:
         type: "integer"
 
