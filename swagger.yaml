@@ -19,6 +19,12 @@ tags:
   externalDocs: 
     description: "參考資料"
     url: "https://google.com/"
+    
+- name: "chip"
+  description: "晶片相關功能"
+  externalDocs:
+    description: "晶片為角色技能相關道具"
+    url: ""
 - name: "item"
   description: "有關道具的所有功能"
   externalDocs:
@@ -39,7 +45,7 @@ paths:
   /account/login: # 登入
     post: # 種類
       tags: # 分類的標籤
-      - "account"
+        - "account"
       summary: "使用者登入" # 摘要
       description: "" #細節
       operationId: "login"
@@ -48,12 +54,12 @@ paths:
       produces: # 回傳格式
         - "application/json"
       parameters: # 請求結構
-      - name: "body"
-        in: "body"
-        description: "傳出帳號密碼，密碼使用MD5"
-        required: true
-        schema: 
-          $ref: "#/definitions/LoginData"
+        - name: "body"
+          in: "body"
+          description: "傳出帳號密碼，密碼使用MD5"
+          required: true # 是否為必要條件
+          schema: 
+            $ref: "#/definitions/LoginData"
       responses: # 回傳
         200: # 成功
           description: "login successful"
@@ -146,6 +152,35 @@ paths:
           description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
+# 晶片
+  /chip/upgrade:
+    post:
+      tags:
+      - "chip"
+      summary: "升級晶片"
+      description: ""
+      operationId: "upgrade"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema: 
+            $ref: "#/definitions/ChipUpgradeData"
+      responses: 
+        200:
+          description: "upgrade successful"
+          schema: 
+            $ref: "#/definitions/ChipUpgradeResult"
+        400:
+          description: "upgrade failed"
+          schema: 
+            $ref: "#/definitions/BadRequest"
+          
 
   /pool/purchase:
     post: # 種類
@@ -194,6 +229,7 @@ securityDefinitions:
       
 # schema
 definitions:
+  # public
   BadRequest: # 錯誤格式
     type: "object"
     properties: 
@@ -202,6 +238,8 @@ definitions:
         format: "int"
       failedMsg:
         type: "string"
+        
+  # account
   LoginData: # 帳號密碼
     type: "object"
     properties: 
@@ -209,6 +247,7 @@ definitions:
         type: "string"
       password:
         type: "string"
+        
   UserData: # 使用者資料
     type: "object"
     properties: 
@@ -225,6 +264,7 @@ definitions:
         description: "金銀銅..."
       mail:
         type: "string"
+        
   LogoutData:
     type: "object"
     properties:
@@ -232,6 +272,7 @@ definitions:
         type: "string"
       token:
         type: "string"
+      
   UserState:
     type: "object"
     properties:
@@ -239,6 +280,50 @@ definitions:
         type: "string"
       stateMessage:
         type: "string"
+  
+  # chip
+  ChipUpgradeData: # 晶片強化資料
+    type: "object"
+    properties: 
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      serialNum:
+        type: "integer"
+      typeId:
+        type: "integer"
+      U:
+        type: "array"
+        items: 
+          type: "object"
+          properties: 
+            UType:
+              type: "integer"
+            UNum:
+              type: "integer"
+      mu:
+        type: "array"
+        items: 
+          type: "object"
+          properties: 
+            having:
+              type: "integer"
+            cost:
+              type: "integer"
+    
+  ChipUpgradeResult:
+      type: "object"
+      properties: 
+        mu:
+          type: "integer"
+        expAfter:
+          type: "number"
+          format: "double"
+      
+  
+  
+  # item
   backpackData: # 開包包
     type: "object"
     properties:
@@ -248,6 +333,7 @@ definitions:
         type: "string"
       filter:
         type: "object"
+        
   backpackInfo: # 使用者資料
     type: "object"
     properties:
@@ -270,7 +356,7 @@ definitions:
         properties:
           itemId:
             type: "string"
-          quentity:
+          quantity:
             type: "integer"
       class:
         type: "integer"
