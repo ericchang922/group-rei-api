@@ -201,6 +201,7 @@ definitions:
         format: "int"
       failedMsg:
         type: "string"
+        
   # account
   LoginData: # 帳號密碼
     type: "object"
@@ -226,10 +227,23 @@ definitions:
         description: "金銀銅..."
       mail:
         type: "string"
+        
   LogoutData:
     type: "object"
     properties:
-        
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      
+  UserState:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+      stateMessage:
+        type: "string"
+  
   # chip
   ChipUpgradeData: # 晶片強化資料
     type: "object"
@@ -238,13 +252,41 @@ definitions:
         type: "string"
       token:
         type: "string"
-  UserState:
-    type: "object"
-    properties:
-      state:
-        type: "string"
-      stateMessage:
-        type: "string"
+      serialNum:
+        type: "integer"
+      typeId:
+        type: "integer"
+      U:
+        type: "array"
+        items: 
+          type: "object"
+          properties: 
+            UType:
+              type: "integer"
+            UNum:
+              type: "integer"
+      mu:
+        type: "array"
+        items: 
+          type: "object"
+          properties: 
+            having:
+              type: "integer"
+            cost:
+              type: "integer"
+    
+  ChipUpgradeResult:
+      type: "object"
+      properties: 
+        mu:
+          type: "integer"
+        expAfter:
+          type: "number"
+          format: "double"
+      
+  
+  
+  # item
   backpackData: # 開包包
     type: "object"
     properties:
@@ -254,6 +296,7 @@ definitions:
         type: "string"
       filter:
         type: "object"
+        
   backpackInfo: # 使用者資料
     type: "object"
     properties:
@@ -276,7 +319,7 @@ definitions:
         properties:
           itemId:
             type: "string"
-          quentity:
+          quantity:
             type: "integer"
       class:
         type: "integer"
