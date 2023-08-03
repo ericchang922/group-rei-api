@@ -32,6 +32,11 @@ tags:
   externalDocs:
     description: "Find out more about our store"
     url: "http://swagger.io"
+- name: "gacha"
+  description: "抽卡相關的功能"
+  externalDocs:
+    description: "參考資料"
+    url: "https://google.com/"  
 schemes:
 - "https"
 - "http"
