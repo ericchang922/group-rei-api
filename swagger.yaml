@@ -31,6 +31,11 @@ tags:
     description:
     url:
 
+- name: "pool"
+  description: "抽卡相關的功能"
+  externalDocs:
+    description: "參考資料"
+    url: "https://google.com/"
 schemes:
 - "https"
 - "http"
@@ -69,7 +74,7 @@ paths:
         - rei_auth:
           - "read:account"
   
-  /logout:
+  /account/logout:
     post: # 種類
       tags: # 分類的標籤
         - "account"
@@ -176,6 +181,38 @@ paths:
           schema: 
             $ref: "#/definitions/BadRequest"
           
+#抽卡
+  /pool/purchase:
+    post: # 種類
+      tags: # 分類的標籤
+        - "pool"
+      summary: "抽卡" # 摘要
+      description: "" #細節
+      operationId: "gacha"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "進行單抽或十連抽"
+          required: true
+          schema:
+            $ref: "#/definitions/PurchaseData"
+      responses: # 回傳
+        200: # 成功
+          description: "purchase successful"
+          schema:
+            $ref: "#/definitions/PurchaseResult"
+        400:
+          description: "purchase failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+      security:
+        - rei_auth:
+            - "read:account"
 
 securityDefinitions:
   api_key:
@@ -228,7 +265,7 @@ definitions:
       mail:
         type: "string"
         
-  LogoutData:
+  LogoutData: #登出
     type: "object"
     properties:
       uid:
@@ -236,7 +273,7 @@ definitions:
       token:
         type: "string"
       
-  UserState:
+  UserState: #使用者狀態
     type: "object"
     properties:
       state:
@@ -323,6 +360,45 @@ definitions:
             type: "integer"
       class:
         type: "integer"
+        
+  #pool
+  PurchaseData: #抽卡
+     type: "object"
+     properties:
+         uid:
+           type: "string"
+         token:
+           type: "string"
+         purchaseId:
+           type: "integer"
+           format: "int"
+         konpeito:
+           type: "integer"
+           format: "int"
+         purchaseCount:
+           type: "integer"
+           format: "int"
+         onceSpend:
+           type: "integer"
+           format: "int"
+  PurchaseResult: #抽卡結果
+    type: "object"
+    properties:
+      itemsInfo:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            propName:
+              type: "string"
+            propClass:
+              type: "string"
+            propNumber:
+              type: "integer"
+              format: "int"
+      konpeito:
+        type: "integer"
+        format: "int"
 
 externalDocs:
   description: "Find out more about Swagger"
