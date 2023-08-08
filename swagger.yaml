@@ -1,8 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is API of a rythme game calls \"Group Rei\".\n
-  It is for our school project"
+  description: "This is API of a rythme game calls \"Group Rei\".\nIt is for our school project"
   version: "0.0.0"
   title: "Group Rei"
   termsOfService: "https://github.com/ericchang922"
@@ -11,31 +10,33 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "http://localhost"
+host: "localhost"
 basePath: "/v0"
 tags:
 - name: "account"
   description: "包含登入及帳號管理等功能"
-  externalDocs: 
+  externalDocs:
     description: "參考資料"
     url: "https://google.com/"
-    
+
 - name: "chip"
   description: "晶片相關功能"
-  externalDocs:
-    description: "晶片為角色技能相關道具"
-    url: ""
+
 - name: "item"
   description: "有關道具的所有功能"
-  externalDocs:
-    description:
-    url:
 
 - name: "pool"
   description: "抽卡相關的功能"
   externalDocs:
     description: "參考資料"
     url: "https://google.com/"
+
+- name: "store"
+  description: "商店"
+
+- name: "plant"
+  description: "種植機"
+
 schemes:
 - "https"
 - "http"
@@ -58,22 +59,22 @@ paths:
           in: "body"
           description: "傳出帳號密碼，密碼使用MD5"
           required: true # 是否為必要條件
-          schema: 
+          schema:
             $ref: "#/definitions/LoginData"
       responses: # 回傳
         200: # 成功
           description: "login successful"
-          schema: 
+          schema:
             $ref: "#/definitions/UserData"
         400:
           description: "login failed"
-          schema: 
+          schema:
             $ref: "#/definitions/BadRequest"
-            
+
       security:
         - rei_auth:
           - "read:account"
-  
+
   /account/logout:
     post: # 種類
       tags: # 分類的標籤
@@ -105,36 +106,49 @@ paths:
       security:
         - rei_auth:
             - "read:account"
-  /item/openBackpack: #開包包
+  /item/itemList: #開包包
     get:
       tags:
         - "item"
-      summary: "打開背包查看道具"
+      summary: "檢視道具"
       description: ""
-
+      operationId: "itemList"
       parameters:
-        - name: "body"
-          in: "body"
-          description: "篩選要找的道具"
+        - name: "uid"
+          in: "query"
+          type: "string"
           required: true
+          description: "玩家帳號"
+        - name: "token"
+          in: "query"
+          type: "string"
+          required: true
+          description: "token"
+        - name: "filter"
+          in: "body"
+          required: true
+          description: "過濾"
           schema:
-            $ref: "#/definitions/backpackData"
+            $ref: "#/definitions/FiltItem"
       responses:
         200:
-          description: "successful operation"
+          description: "get successful"
           schema:
-            $ref: "#/definitions/backpackInfo"
+            $ref: "#/definitions/ItemResult"
         400:
           description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
+
   /item/deleteItems:
-    delete:
+    post:
       tags:
         - "item"
       summary: "販售及分解道具"
       description: ""
+      operationId: "deleteItems"
+
 
       parameters:
         - name: "body"
@@ -147,7 +161,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            $ref: "#/definitions/backpackInfo"
+            $ref: "#/definitions/ItemResult"
         400:
           description: "failed"
           schema:
@@ -169,26 +183,58 @@ paths:
           in: "body"
           description: ""
           required: true
-          schema: 
+          schema:
             $ref: "#/definitions/ChipUpgradeData"
-      responses: 
+      responses:
         200:
           description: "upgrade successful"
-          schema: 
+          schema:
             $ref: "#/definitions/ChipUpgradeResult"
         400:
           description: "upgrade failed"
-          schema: 
+          schema:
             $ref: "#/definitions/BadRequest"
-          
+
 #抽卡
+  /pool/openPurchase:
+    post: # 種類
+      tags: # 分類的標籤
+        - "pool"
+      summary: "打開抽卡介面" # 摘要
+      description: "" #細節
+      operationId: "openPool"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "紀錄指揮官目前的帳號貨幣數量"
+          required: true
+          schema:
+            $ref: "#/definitions/OpenPurchaseData"
+      responses: # 回傳
+        200: # 成功
+          description: "open purchase successful"
+          schema:
+            $ref: "#/definitions/OpenPurchaseResult"
+        400:
+          description: "open purchase failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+      security:
+        - rei_auth:
+            - "read:account"
+
   /pool/purchase:
     post: # 種類
       tags: # 分類的標籤
         - "pool"
       summary: "抽卡" # 摘要
       description: "" #細節
-      operationId: "gacha"
+      operationId: "pool"
       consumes: # 請求格式
         - "application/json"
       produces: # 回傳格式
@@ -214,6 +260,157 @@ paths:
         - rei_auth:
             - "read:account"
 
+# 商店
+  /store/list:
+    get:
+      tags:
+        - "store"
+      summary: "查詢商店"
+      description: "商店販賣物品清單"
+      operationId: "getStoreList"
+      consumes:
+        - "applictaion/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uid"
+          in: "query"
+          type: "string"
+          required: true
+          description: "根據查詢者不同將會有不一樣的購買紀錄（例如有限量的商品已經售罄）"
+        - name: "mu"
+          in: "query"
+          type: "integer"
+          required: true
+          description: "取得玩家現有立日已確定資料正確性"
+        - name: "konpeito"
+          in: "query"
+          type: "integer"
+          required: true
+          description: "取得玩家現有星星糖數量驗證資料正確性"
+      responses:
+        200:
+          description: "get stroe list successful"
+          schema:
+            $ref: "#/definitions/StoreList"
+        400:
+          description: "get store list failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /store/buy:
+    post:
+      tags:
+        - "store"
+      summary: "在商店中購買物件"
+      description: ""
+      operationId: "buy"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/Cart"
+      responses:
+        200:
+          description: "buy successful"
+          schema:
+            $ref: "#/definitions/BuyResult"
+        400:
+          description: "buy failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+#種植機
+  /plant/addPlant:
+    post:
+      tags:
+        - "plant"
+      summary: 種植植物
+      description: ""
+      operationId: "addPlant"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "傳入要種的植物種類及數量"
+          required: true
+          schema:
+            $ref: "#/definitions/AddPlantData"
+      responses: # 回傳
+        200: # 成功
+          description: "add plant successful"
+          schema:
+            $ref: "#/definitions/AddPlantResult"
+        400:
+          description: "add plant failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+  /plant/deletePlant:
+    post:
+      tags:
+        - "plant"
+      summary: 取消當前種植植物
+      description: ""
+      operationId: "deletePlant"
+      consumes: # 請求格式
+        - "application/json"
+      produces: # 回傳格式
+        - "application/json"
+      parameters: # 請求結構
+        - name: "body"
+          in: "body"
+          description: "傳入要取消的植物種類及數量"
+          required: true
+          schema:
+            $ref: "#/definitions/AddPlantData"
+      responses: # 回傳
+        200: # 成功
+          description: "delete plant successful"
+          schema:
+            $ref: "#/definitions/DeletePlantResult"
+        400:
+          description: "delete plant failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+  /plant/queryPlant:
+    get:
+      tags:
+        - "plant"
+      summary: "查詢植物狀況"
+      description: ""
+      operationId: "queryPlant"
+      consumes:
+        - "applictaion/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "uid"
+          in: "query"
+          type: "string"
+          required: true
+          description: "玩家帳號"
+        - name: "token"
+          in: "query"
+          type: "string"
+          required: true
+          description: "token"
+      responses:
+        200:
+          description: "query plant successful"
+          schema:
+            $ref: "#/definitions/QueryPlantResult"
+        400:
+          description: "query plant failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -226,35 +423,35 @@ securityDefinitions:
     scopes:
       read:pets: "read your pets"
       write:pets: "modify pets in your account"
-      
+
 # schema
 definitions:
   # public
   BadRequest: # 錯誤格式
     type: "object"
-    properties: 
+    properties:
       statusCode:
         type: "integer"
         format: "int"
       failedMsg:
         type: "string"
-        
+
   # account
   LoginData: # 帳號密碼
     type: "object"
-    properties: 
+    properties:
       uid:
         type: "string"
       password:
         type: "string"
-        
+
   UserData: # 使用者資料
     type: "object"
-    properties: 
+    properties:
       name:
         type: "string"
       birthday:
-        type: "datetime"
+        type: "object"
         format: "date"
       phone:
         type: "string"
@@ -264,7 +461,7 @@ definitions:
         description: "金銀銅..."
       mail:
         type: "string"
-        
+
   LogoutData: #登出
     type: "object"
     properties:
@@ -272,7 +469,7 @@ definitions:
         type: "string"
       token:
         type: "string"
-      
+
   UserState: #使用者狀態
     type: "object"
     properties:
@@ -280,11 +477,11 @@ definitions:
         type: "string"
       stateMessage:
         type: "string"
-  
+
   # chip
   ChipUpgradeData: # 晶片強化資料
     type: "object"
-    properties: 
+    properties:
       uid:
         type: "string"
       token:
@@ -295,36 +492,34 @@ definitions:
         type: "integer"
       U:
         type: "array"
-        items: 
+        items:
           type: "object"
-          properties: 
+          properties:
             UType:
               type: "integer"
             UNum:
               type: "integer"
       mu:
         type: "array"
-        items: 
+        items:
           type: "object"
-          properties: 
+          properties:
             having:
               type: "integer"
             cost:
               type: "integer"
-    
+
   ChipUpgradeResult:
       type: "object"
-      properties: 
+      properties:
         mu:
           type: "integer"
         expAfter:
           type: "number"
           format: "double"
-      
-  
-  
+
   # item
-  backpackData: # 開包包
+  ItemList: # 查看道具
     type: "object"
     properties:
       uid:
@@ -332,9 +527,11 @@ definitions:
       token:
         type: "string"
       filter:
-        type: "object"
-        
-  backpackInfo: # 使用者資料
+        type: "array"
+        items:
+          type: "object"
+
+  ItemResult: # 使用者資料
     type: "object"
     properties:
       itemName:
@@ -343,7 +540,17 @@ definitions:
         type: "string"
       quantity:
         type: "integer"
-  
+  FiltItem: #過濾條件
+    type: "array"
+    items:
+      type: "object"
+      properties: 
+        itemClass:
+          type: "integer"
+        itemRare:
+          type: "integer"
+      
+
   deleteItemsData: # 分解/出售道具
     type: "object"
     properties:
@@ -352,35 +559,87 @@ definitions:
       token:
         type: "string"
       itemsInfo:
-        type: "object"
-        properties:
-          itemId:
-            type: "string"
-          quantity:
-            type: "integer"
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            itemId:
+              type: "string"
+            quantity:
+              type: "integer"
       class:
         type: "integer"
-        
-  #pool
+
+  # pool
+  OpenPurchaseData: #打開卡池
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      konpeito: #星星糖
+        type: "integer"
+        format: "int"
+      nuclearWaste: #核廢料(友情抽卡材料)
+        type: "integer"
+        format: "int"
+  OpenPurchaseResult: #打開卡池結果
+    type: "object"
+    properties:
+      purchase:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            poolId: #卡池編號
+              type: "integer"
+              format: "int"
+            poolName: #卡池名稱
+              type: "string"
+            content: #文字敘述
+              type: "string"
+            oneTimeCost: #單次花費
+              type: "integer"
+              format: "int"
+            history: #抽卡紀錄(方便算保底)
+              type: "array"
+              items:
+                type: "object"
+                properties:
+                  propName: #道具名稱
+                    type: "string"
+                  propClass: #道具類別
+                    type: "string"
+                  propNumber: #道具數量
+                    type: "integer"
+                    format: "int"
+                  purchaseTime: #抽卡時間
+                    type: "string"
+                    format: "date"
+            endTime: #結束時間
+              type: "string"
+              format: "date"
+
   PurchaseData: #抽卡
-     type: "object"
-     properties:
-         uid:
-           type: "string"
-         token:
-           type: "string"
-         purchaseId:
-           type: "integer"
-           format: "int"
-         konpeito:
-           type: "integer"
-           format: "int"
-         purchaseCount:
-           type: "integer"
-           format: "int"
-         onceSpend:
-           type: "integer"
-           format: "int"
+    type: "object"
+    properties:
+        uid:
+          type: "string"
+        token:
+          type: "string"
+        purchaseId:
+          type: "integer"
+          format: "int"
+        konpeito: #星星糖
+          type: "integer"
+          format: "int"
+        purchaseCount:
+          type: "integer"
+          format: "int"
+        onceSpend:
+          type: "integer"
+          format: "int"
   PurchaseResult: #抽卡結果
     type: "object"
     properties:
@@ -399,6 +658,134 @@ definitions:
       konpeito:
         type: "integer"
         format: "int"
+
+  # store
+  StoreList: # 商店列表
+    type: object
+    properties:
+      product:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            proId:
+              type: "string"
+            propName:
+              type: "string"
+            proTypeId:
+              type: "integer"
+            leftNumber:
+              type: "integer"
+            price:
+              type: "integer"
+      konpeito:
+        type: "integer"
+        # 為了避免在向伺服器發送請求後竄改內容，因此會再回傳一次星星糖的數值"
+
+  Cart:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      itemId:
+        type: "integer"
+      itemNumber:
+        type: "integer"
+      mu:
+        type: "integer"
+      konpeito:
+        type: "integer"
+
+  BuyResult:
+    type: "object"
+    properties:
+      leftNumber:
+        type: "integer"
+      status:
+        type: "string"
+
+  # plant
+  AddPlantData: #種植物
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      token:
+        type: "string"
+      seed:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            seedrole:
+              type: "integer"
+            seedId:
+              type: "string"
+            seedQuan:
+              type: "integer"
+  AddPlantResult:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+      time:
+        type: "string"
+        format: "timestamp"
+  DeletePlantResult: #刪植物
+    type: "object"
+    properties: 
+      state:
+        type: "string"
+      returnitem:
+        type: "integer"
+          
+  QueryPlantResult: #查植物
+    type: "object"
+    properties:
+      role1:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            seedId:
+              type: "integer"
+              format: "int"
+            seedQuan:
+              type: "integer"
+              format: "int"
+            time:
+              type: "string"
+              format: "timestamp"
+      role2:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            seedId:
+              type: "integer"
+              format: "int"
+            seedQuan:
+              type: "integer"
+              format: "int"
+            time:
+              type: "string"
+              format: "timestamp"
+      role3:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            seedId:
+              type: "integer"
+              format: "int"
+            seedQuan:
+              type: "integer"
+              format: "int"
+            time:
+              type: "string"
+              format: "timestamp"
 
 externalDocs:
   description: "Find out more about Swagger"
