@@ -448,6 +448,8 @@ definitions:
   UserData: # 使用者資料
     type: "object"
     properties:
+      token:
+        type: string
       name:
         type: "string"
       birthday:
