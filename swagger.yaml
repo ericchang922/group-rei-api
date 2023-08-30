@@ -37,6 +37,9 @@ tags:
 - name: "plant"
   description: "種植機"
 
+- name: "game"
+  description: "遊玩、玩法相關"
+
 schemes:
 - "https"
 - "http"
@@ -74,6 +77,7 @@ paths:
       security:
         - rei_auth:
           - "read:account"
+          - "write:loginLog"
 
   /account/logout:
     post: # 種類
@@ -105,7 +109,69 @@ paths:
 
       security:
         - rei_auth:
-            - "read:account"
+          - "read:account"
+
+  /account/signup:
+    post:
+      tags:
+        - "account"
+      summary: "註冊帳號"
+      description: ""
+      operationId: "signup"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/SignupData"
+      responses:
+        200:
+          description: "singup successful"
+          schema:
+            $ref: "#/definitions/SingupResult"
+        400:
+          description: "signup failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+      security:
+        - rei_auth:
+          - "write:account"
+
+  /account/checkUid:
+    get:
+      tags:
+        - "account"
+      summary: "確認帳號是否已經存在"
+      description: ""
+      operationId: "checkUid"
+      parameters:
+        - name: "uid"
+          in: "query"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              isUsed:
+                type: "boolean"
+        400:
+          description: "checkUid failed"
+
+      security:
+        - rei_auth:
+          - "read:account"
+
+
+# item
   /item/itemList: #開包包
     get:
       tags:
@@ -411,6 +477,36 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
+# game
+  /game/mode:
+    post:
+      tags:
+        - "game"
+      summary: "選擇遊戲模式"
+      description: "可選擇主線、活動等不同的關卡模式"
+      operationId: "gameMode"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SelectModeData"
+      responses:
+        200:
+          description: "select mode successful"
+          schema:
+            $ref: "#/definitions/SelectModeData"
+        400:
+          description: "select mode failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+
+
+
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -451,7 +547,7 @@ definitions:
       name:
         type: "string"
       birthday:
-        type: "object"
+        type: "string"
         format: "date"
       phone:
         type: "string"
@@ -471,6 +567,33 @@ definitions:
         type: "string"
 
   UserState: #使用者狀態
+    type: "object"
+    properties:
+      state:
+        type: "string"
+      stateMessage:
+        type: "string"
+
+  SignupData:
+    type: "object"
+    properties:
+      uid:
+        type: "string"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      phone:
+        type: "string"
+      birthday:
+        type: "string"
+        format: "date"
+        required:
+          - "fasle"
+      password:
+        format: "string"
+
+  SingupResult:
     type: "object"
     properties:
       state:
@@ -544,12 +667,11 @@ definitions:
     type: "array"
     items:
       type: "object"
-      properties: 
+      properties:
         itemClass:
           type: "integer"
         itemRare:
           type: "integer"
-      
 
   deleteItemsData: # 分解/出售道具
     type: "object"
@@ -735,12 +857,12 @@ definitions:
         format: "timestamp"
   DeletePlantResult: #刪植物
     type: "object"
-    properties: 
+    properties:
       state:
         type: "string"
       returnitem:
         type: "integer"
-          
+
   QueryPlantResult: #查植物
     type: "object"
     properties:
@@ -786,6 +908,24 @@ definitions:
             time:
               type: "string"
               format: "timestamp"
+
+  # game
+  SelectModeData:
+    type: "object"
+    properties:
+      modeId:
+        type: "integer"
+      chapter:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            chapterId:
+              type: "integer"
+            chapterName:
+              type: "string"
+            imgId:
+              type: "string"
 
 externalDocs:
   description: "Find out more about Swagger"
