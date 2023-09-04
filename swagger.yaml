@@ -661,7 +661,7 @@ definitions:
     properties:
       itemName:
         type: "string"
-      itemClass:
+      itemType:
         type: "string"
       quantity:
         type: "integer"
@@ -670,7 +670,7 @@ definitions:
     items:
       type: "object"
       properties:
-        itemClass:
+        itemType:
           type: "integer"
         itemRare:
           type: "integer"
