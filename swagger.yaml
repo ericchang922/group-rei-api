@@ -661,7 +661,7 @@ definitions:
     properties:
       itemName:
         type: "string"
-      itemClass:
+      itemType:
         type: "string"
       quantity:
         type: "integer"
@@ -670,7 +670,7 @@ definitions:
     items:
       type: "object"
       properties:
-        itemClass:
+        itemType:
           type: "integer"
         itemRare:
           type: "integer"
@@ -731,11 +731,11 @@ definitions:
               items:
                 type: "object"
                 properties:
-                  propName: #道具名稱
+                  itemName: #道具名稱
                     type: "string"
-                  propClass: #道具類別
+                  itemClass: #道具類別
                     type: "string"
-                  propNumber: #道具數量
+                  itemNumber: #道具數量
                     type: "integer"
                     format: "int"
                   purchaseTime: #抽卡時間
@@ -772,11 +772,11 @@ definitions:
         items:
           type: "object"
           properties:
-            propName:
+            itemName:
               type: "string"
-            propClass:
+            itemType:
               type: "string"
-            propAmount:
+            itemAmount:
               type: "integer"
               format: "int"
       konpeito:
@@ -792,11 +792,11 @@ definitions:
         items:
           type: "object"
           properties:
-            proId:
+            itemId:
               type: "string"
-            propName:
+            itemName:
               type: "string"
-            proTypeId:
+            itemTypeId:
               type: "integer"
             leftNumber:
               type: "integer"
