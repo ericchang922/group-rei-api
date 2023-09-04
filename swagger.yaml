@@ -262,8 +262,8 @@ paths:
             $ref: "#/definitions/BadRequest"
 
 #抽卡
-  /pool/openPurchase:
-    post: # 種類
+  /pool/list:
+    get: # 種類
       tags: # 分類的標籤
         - "pool"
       summary: "打開抽卡介面" # 摘要
@@ -391,7 +391,7 @@ paths:
             $ref: "#/definitions/BadRequest"
 
 #種植機
-  /plant/addPlant:
+  /plant/add:
     post:
       tags:
         - "plant"
@@ -776,7 +776,7 @@ definitions:
               type: "string"
             propClass:
               type: "string"
-            propNumber:
+            propAmount:
               type: "integer"
               format: "int"
       konpeito:
