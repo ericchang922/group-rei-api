@@ -143,7 +143,7 @@ paths:
         - rei_auth:
           - "write:account"
 
-  /account/checkUid:
+  /account/check-uid:
     get:
       tags:
         - "account"
@@ -172,7 +172,7 @@ paths:
 
 
 # item
-  /item/itemList: #開包包
+  /item/item-list: #開包包
     get:
       tags:
         - "item"
@@ -207,7 +207,7 @@ paths:
             $ref: "#/definitions/BadRequest"
 
 
-  /item/deleteItems:
+  /item/delete-items:
     post:
       tags:
         - "item"
@@ -418,7 +418,7 @@ paths:
           description: "add plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
-  /plant/deletePlant:
+  /plant/delete-plant:
     post:
       tags:
         - "plant"
@@ -445,7 +445,7 @@ paths:
           description: "delete plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
-  /plant/queryPlant:
+  /plant/query-plant:
     get:
       tags:
         - "plant"
