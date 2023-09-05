@@ -557,7 +557,7 @@ definitions:
         type: "integer"
         format: "int"
         description: "金銀銅..."
-      mail:
+      email:
         type: "string"
 
   LogoutData: #登出
