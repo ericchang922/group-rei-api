@@ -661,12 +661,17 @@ definitions:
   ItemResult: # 使用者資料
     type: "object"
     properties:
-      itemName:
-        type: "string"
-      itemType:
-        type: "string"
-      quantity:
-        type: "integer"
+      "items":
+        type: "array"
+        items:
+          type: "object"
+          properties: 
+            itemName:
+              type: "string"
+            itemType:
+              type: "string"
+            amount:
+              type: "integer"
   FiltItem: #過濾條件
     type: "array"
     items:
@@ -691,7 +696,7 @@ definitions:
           properties:
             itemId:
               type: "string"
-            quantity:
+            amount:
               type: "integer"
       class:
         type: "integer"
