@@ -565,8 +565,7 @@ definitions:
   LogoutData: #登出
     type: "object"
     properties:
-      uid:
-        type: "string"
+
       token:
         type: "string"
 
@@ -609,8 +608,6 @@ definitions:
   ChipUpgradeData: # 晶片強化資料
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       serialNum:
@@ -649,8 +646,6 @@ definitions:
   ItemList: # 查看道具
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       filter:
@@ -685,8 +680,6 @@ definitions:
   deleteItemsData: # 分解/出售道具
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       itemsInfo:
@@ -705,8 +698,6 @@ definitions:
   OpenPurchaseData: #打開卡池
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       konpeito: #星星糖
@@ -755,8 +746,6 @@ definitions:
   PurchaseData: #抽卡
     type: "object"
     properties:
-        uid:
-          type: "string"
         token:
           type: "string"
         purchaseId:
@@ -816,8 +805,6 @@ definitions:
   Cart:
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       itemId:
@@ -841,8 +828,6 @@ definitions:
   AddPlantData: #種植物
     type: "object"
     properties:
-      uid:
-        type: "string"
       token:
         type: "string"
       seed:
