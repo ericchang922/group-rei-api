@@ -172,7 +172,7 @@ paths:
 
 
 # item
-  /item/item-list: #開包包
+  /item/list: #開包包
     get:
       tags:
         - "item"
@@ -207,7 +207,7 @@ paths:
             $ref: "#/definitions/BadRequest"
 
 
-  /item/delete-items:
+  /item/delete:
     post:
       tags:
         - "item"
@@ -418,7 +418,7 @@ paths:
           description: "add plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
-  /plant/delete-plant:
+  /plant/delete:
     post:
       tags:
         - "plant"
@@ -445,7 +445,7 @@ paths:
           description: "delete plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
-  /plant/query-plant:
+  /plant/query:
     get:
       tags:
         - "plant"
