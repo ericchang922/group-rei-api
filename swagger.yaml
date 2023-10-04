@@ -170,7 +170,6 @@ paths:
         - rei_auth:
           - "read:account"
 
-
 # item
   /item/list: #開包包
     get:
@@ -206,7 +205,6 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
-
   /item/delete:
     post:
       tags:
@@ -214,7 +212,6 @@ paths:
       summary: "販售及分解道具"
       description: ""
       operationId: "deleteItems"
-
 
       parameters:
         - name: "body"
@@ -504,9 +501,6 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
-
-
-
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -565,7 +559,6 @@ definitions:
   LogoutData: #登出
     type: "object"
     properties:
-
       token:
         type: "string"
 
@@ -610,7 +603,7 @@ definitions:
     properties:
       token:
         type: "string"
-      serialNum:
+      objItemOid:
         type: "integer"
       typeId:
         type: "integer"
@@ -634,13 +627,13 @@ definitions:
               type: "integer"
 
   ChipUpgradeResult:
-      type: "object"
-      properties:
-        mu:
-          type: "integer"
-        expAfter:
-          type: "number"
-          format: "double"
+    type: "object"
+    properties:
+      mu:
+        type: "integer"
+      expAfter:
+        type: "number"
+        format: "double"
 
   # item
   ItemList: # 查看道具
@@ -660,7 +653,7 @@ definitions:
         type: "array"
         items:
           type: "object"
-          properties: 
+          properties:
             itemName:
               type: "string"
             itemType:
@@ -746,20 +739,24 @@ definitions:
   PurchaseData: #抽卡
     type: "object"
     properties:
-        token:
-          type: "string"
-        purchaseId:
-          type: "integer"
-          format: "int"
-        konpeito: #星星糖
-          type: "integer"
-          format: "int"
-        purchaseCount:
-          type: "integer"
-          format: "int"
-        onceSpend:
-          type: "integer"
-          format: "int"
+      token:
+        type: "string"
+      purchaseId:
+        type: "integer"
+        format: "int"
+      konpeito: #星星糖
+        type: "integer"
+      nuclearWast:
+        type: "integer"
+      poo:
+        type: "integer"
+      purchaseCount:
+        type: "integer"
+        format: "int"
+      spend:
+        type: "integer"
+        format: "int"
+
   PurchaseResult: #抽卡結果
     type: "object"
     properties:
@@ -778,6 +775,10 @@ definitions:
       konpeito:
         type: "integer"
         format: "int"
+      nuclearWaste:
+        type: "integer"
+      poo:
+        type: "integer"
 
   # store
   StoreList: # 商店列表
@@ -815,11 +816,19 @@ definitions:
         type: "integer"
       konpeito:
         type: "integer"
+      poo:
+        type: "integer"
 
   BuyResult:
     type: "object"
     properties:
       leftNumber:
+        type: "integer"
+      mu:
+        type: "integer"
+      konpeito:
+        type: "integer"
+      poo:
         type: "integer"
       status:
         type: "string"
@@ -916,9 +925,9 @@ definitions:
           properties:
             chapterId:
               type: "integer"
-            chapterName:
+            name:
               type: "string"
-            imgId:
+            img:
               type: "string"
 
 externalDocs:
