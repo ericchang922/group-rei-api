@@ -250,9 +250,37 @@ paths:
             $ref: "#/definitions/ChipUpgradeData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful" #待改
           schema:
             $ref: "#/definitions/ChipUpgradeResult"
+        400:
+          description: "failed" #待改
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /chip/info:
+    get:
+      tags:
+        - "chip"
+      summary: "晶片資訊"
+      description: ""
+      operationId: "info"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipInfoData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipInfoResult"
         400:
           description: "upgrade failed"
           schema:
@@ -634,6 +662,43 @@ definitions:
       expAfter:
         type: "number"
         format: "double"
+
+
+  ChipInfoData: # 晶片(?)
+    type: "object"
+    properties:
+      chipId:
+        type: "integer"
+
+  ChipInfoResult:
+    type: "object"
+    properties:
+      chipLevel:
+        type: "string"
+      itemId:
+        type: "string"
+      name:
+        type: "string"
+      content:
+        type: "string"
+      attack:
+        type: "integer"
+      chipCategory:
+        type: "string"
+      upgradeCost:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+              item_id:
+                type: "string"
+      overlock:
+          type: "array"   #[]
+          items:
+            type: "object"    #{a}
+            properties:
+              attributeId:
+                type: "object"
 
   # item
   ItemList: # 查看道具
