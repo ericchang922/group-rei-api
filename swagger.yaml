@@ -314,6 +314,32 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
+  /chip/obj:
+    get:
+      tags:
+        - "chip"
+      summary: "晶片物件查詢"
+      description: ""
+      operationId: "obj"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters: # 請求結構
+        - name: "obj_item_oid"
+          in: "query"
+          type: "string"
+          required: true
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipObjResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
 #抽卡
   /pool/list:
     get: # 種類
@@ -750,6 +776,21 @@ definitions:
                 type: "integer"
               attribute:
                 type: "string"
+
+  ChipObjResult:
+    type: "object"
+    properties:
+      item_id:
+        type: "string"
+      name:
+        type: "string"
+      exp:
+        type: "integer"
+      attribute:
+        type: "string"
+      category:
+        type: "string"
+
 
   # item
   ItemList: # 查看道具
