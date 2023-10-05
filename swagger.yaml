@@ -286,6 +286,34 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
+  /chip/list:
+    get:
+      tags:
+        - "chip"
+      summary: "晶片資訊"
+      description: ""
+      operationId: "list"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipListData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipListResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
 #抽卡
   /pool/list:
     get: # 種類
@@ -699,6 +727,29 @@ definitions:
             properties:
               attributeId:
                 type: "object"
+
+  ChipListData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
+  ChipListResult:
+    type: "object"
+    properties:
+      objItems:
+        type: "array"
+        items:
+            type: "object"    #{a}
+            properties:
+              obj_item_oid:
+                type: "string"
+              item_id:
+                type: "string"
+              exp:
+                type: "integer"
+              attribute:
+                type: "string"
 
   # item
   ItemList: # 查看道具
