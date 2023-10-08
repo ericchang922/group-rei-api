@@ -270,12 +270,17 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "body"
-          in: "body"
-          description: ""
+        - name: "chipId"
+          in: "query"
+          type: "string"
           required: true
-          schema:
-            $ref: "#/definitions/ChipInfoData"
+      # parameters:
+      #   - name: "body"
+      #     in: "body"
+      #     description: ""
+      #     required: true
+      #     schema:
+      #       $ref: "#/definitions/ChipInfoData"
       responses:
         200:
           description: "upgrade successful"
@@ -527,6 +532,7 @@ paths:
           description: "add plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
+
   /plant/delete:
     post:
       tags:
@@ -554,6 +560,7 @@ paths:
           description: "delete plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
+
   /plant/query:
     get:
       tags:
@@ -748,11 +755,11 @@ definitions:
         format: "double"
 
 
-  ChipInfoData: # 晶片(?)
-    type: "object"
-    properties:
-      chipId:
-        type: "integer"
+  # ChipInfoData: # 晶片(?)
+  #   type: "object"
+  #   properties:
+  #     chipId:
+  #       type: "integer"
 
   ChipInfoResult:
     type: "object"
