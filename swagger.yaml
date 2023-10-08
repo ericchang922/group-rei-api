@@ -325,16 +325,46 @@ paths:
         - "application/json"
       produces:
         - "application/json"
-      parameters: # 請求結構
-        - name: "obj_item_oid"
-          in: "query"
-          type: "string"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
           required: true
+          schema:
+            $ref: "#/definitions/ChipObjData"
       responses:
         200:
           description: "upgrade successful"
           schema:
             $ref: "#/definitions/ChipObjResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /chip/overlock:
+    post:
+      tags:
+        - "chip"
+      summary: "晶片資訊"
+      description: ""
+      operationId: "overlock"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipOverData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipOverResult"
         400:
           description: "upgrade failed"
           schema:
@@ -768,19 +798,25 @@ definitions:
         items:
             type: "object"    #{a}
             properties:
-              obj_item_oid:
+              objItemOid:
                 type: "string"
-              item_id:
+              itemId:
                 type: "string"
               exp:
                 type: "integer"
               attribute:
                 type: "string"
 
+  ChipObjData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
   ChipObjResult:
     type: "object"
     properties:
-      item_id:
+      itemId:
         type: "string"
       name:
         type: "string"
@@ -789,6 +825,22 @@ definitions:
       attribute:
         type: "string"
       category:
+        type: "string"
+
+  ChipOverData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+
+  ChipOverResult:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      message:
         type: "string"
 
 
