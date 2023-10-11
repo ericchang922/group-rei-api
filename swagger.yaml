@@ -270,17 +270,106 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "body"
-          in: "body"
-          description: ""
+        - name: "chipId"
+          in: "query"
+          type: "string"
           required: true
-          schema:
-            $ref: "#/definitions/ChipInfoData"
+      # parameters:
+      #   - name: "body"
+      #     in: "body"
+      #     description: ""
+      #     required: true
+      #     schema:
+      #       $ref: "#/definitions/ChipInfoData"
       responses:
         200:
           description: "upgrade successful"
           schema:
             $ref: "#/definitions/ChipInfoResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /chip/list:
+    get:
+      tags:
+        - "chip"
+      summary: "晶片資訊"
+      description: ""
+      operationId: "list"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipListData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipListResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /chip/obj:
+    get:
+      tags:
+        - "chip"
+      summary: "晶片物件查詢"
+      description: ""
+      operationId: "obj"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipObjData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipObjResult"
+        400:
+          description: "upgrade failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /chip/overlock:
+    post:
+      tags:
+        - "chip"
+      summary: "晶片資訊"
+      description: ""
+      operationId: "overlock"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/ChipOverData"
+      responses:
+        200:
+          description: "upgrade successful"
+          schema:
+            $ref: "#/definitions/ChipOverResult"
         400:
           description: "upgrade failed"
           schema:
@@ -443,6 +532,7 @@ paths:
           description: "add plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
+
   /plant/delete:
     post:
       tags:
@@ -470,6 +560,7 @@ paths:
           description: "delete plant failed"
           schema:
             $ref: "#/definitions/BadRequest"
+
   /plant/query:
     get:
       tags:
@@ -664,11 +755,11 @@ definitions:
         format: "double"
 
 
-  ChipInfoData: # 晶片(?)
-    type: "object"
-    properties:
-      chipId:
-        type: "integer"
+  # ChipInfoData: # 晶片(?)
+  #   type: "object"
+  #   properties:
+  #     chipId:
+  #       type: "integer"
 
   ChipInfoResult:
     type: "object"
@@ -699,6 +790,66 @@ definitions:
             properties:
               attributeId:
                 type: "object"
+
+  ChipListData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
+  ChipListResult:
+    type: "object"
+    properties:
+      objItems:
+        type: "array"
+        items:
+            type: "object"    #{a}
+            properties:
+              objItemOid:
+                type: "string"
+              itemId:
+                type: "string"
+              exp:
+                type: "integer"
+              attribute:
+                type: "string"
+
+  ChipObjData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
+  ChipObjResult:
+    type: "object"
+    properties:
+      itemId:
+        type: "string"
+      name:
+        type: "string"
+      exp:
+        type: "integer"
+      attribute:
+        type: "string"
+      category:
+        type: "string"
+
+  ChipOverData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+
+  ChipOverResult:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+      message:
+        type: "string"
+
 
   # item
   ItemList: # 查看道具
