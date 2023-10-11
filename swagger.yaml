@@ -170,6 +170,34 @@ paths:
         - rei_auth:
           - "read:account"
 
+  /account/forget-password:
+    post:
+      tags:
+        - "account"
+      summary: "忘記密碼"
+      description: ""
+      operationId: "forgetPassword"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/forgetPasswordData"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/forgetPasswordResult"
+        400:
+          description: "signup failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
 # item
   /item/list: #開包包
     get:
@@ -716,6 +744,18 @@ definitions:
       stateMessage:
         type: "string"
 
+  forgetPasswordData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
+  forgetPasswordResult:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+
   # chip
   ChipUpgradeData: # 晶片強化資料
     type: "object"
@@ -779,17 +819,34 @@ definitions:
       upgradeCost:
         type: "array"
         items:
-          type: "object"
-          properties:
-              item_id:
-                type: "string"
+          example: item_id
       overlock:
           type: "array"   #[]
           items:
             type: "object"    #{a}
             properties:
-              attributeId:
-                type: "object"
+              atb0004:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    ability_id:
+                      type: string
+                    value:
+                      type: "array"
+                      items:
+                        type: "integer"
+              atb0005:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    ability_id:
+                      type: string
+                    value:
+                      type: "array"
+                      items:
+                        type: "integer"
 
   ChipListData:
     type: "object"
