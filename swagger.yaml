@@ -283,11 +283,11 @@ paths:
       #       $ref: "#/definitions/ChipInfoData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipInfoResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -295,7 +295,7 @@ paths:
     get:
       tags:
         - "chip"
-      summary: "晶片資訊"
+      summary: "玩家晶片列表"
       description: ""
       operationId: "list"
       consumes:
@@ -311,11 +311,11 @@ paths:
             $ref: "#/definitions/ChipListData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipListResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -339,11 +339,11 @@ paths:
             $ref: "#/definitions/ChipObjData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipObjResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -351,7 +351,7 @@ paths:
     post:
       tags:
         - "chip"
-      summary: "晶片資訊"
+      summary: "晶片突破"
       description: ""
       operationId: "overlock"
       consumes:
@@ -367,11 +367,11 @@ paths:
             $ref: "#/definitions/ChipOverData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipOverResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -818,6 +818,8 @@ definitions:
     type: "object"
     properties:
       token:
+        type: "string"
+      objItemOid:
         type: "string"
 
   ChipObjResult:
