@@ -957,7 +957,7 @@ definitions:
     properties:
       token:
         type: "string"
-      purchaseId:
+      poolId:
         type: "integer"
         format: "int"
       konpeito: #星星糖
