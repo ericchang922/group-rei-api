@@ -884,8 +884,6 @@ definitions:
     properties:
       itemId:
         type: "string"
-      name:
-        type: "string"
       exp:
         type: "integer"
       attribute:
