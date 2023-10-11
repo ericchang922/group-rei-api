@@ -884,6 +884,8 @@ definitions:
     properties:
       itemId:
         type: "string"
+      chipId:
+        type: "string"
       exp:
         type: "integer"
       attribute:
