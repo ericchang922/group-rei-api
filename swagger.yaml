@@ -40,6 +40,9 @@ tags:
 - name: "game"
   description: "遊玩、玩法相關"
 
+- name: "suit"
+  description: "服裝"
+
 schemes:
 - "https"
 - "http"
@@ -648,6 +651,60 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
+
+  /suit/upgrade:
+    post:
+      tags:
+        - "suit"
+      summary: "服裝升級"
+      description: ""
+      operationId: "upgrade"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SuitUpgradeData"
+      responses:
+        200:
+          description: "select mode successful"
+          schema:
+            $ref: "#/definitions/SuitUpgradeRequest"
+        400:
+          description: "select mode failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /suit/obj:
+    post:
+      tags:
+        - "suit"
+      summary: "服裝物件查詢"
+      operationId: "obj"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SuitObjData"
+      responses:
+        200:
+          description: "select mode successful"
+          schema:
+            $ref: "#/definitions/SuitObjRequest"
+        400:
+          description: "select mode failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+
+
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -1202,6 +1259,53 @@ definitions:
               type: "string"
             img:
               type: "string"
+
+  SuitUpgradeData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+      mu:
+        type: "object"
+        properties:
+          having:
+            type: "integer"
+          cost:
+            type: "integer"
+
+  SuitUpgradeRequest:
+    type: "object"
+    properties:
+      mu:
+        type: "integer"
+      expAfter:
+        type: "integer"
+
+  SuitObjData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+
+  SuitObjRequest:
+    type: "object"
+    properties:
+      itemId:
+        type: "string"
+      suitId:
+        type: "string"
+      life:
+        type: "integer"
+      defense:
+        type: "integer"
+      exp:
+        type: "integer"
+
+
 
 externalDocs:
   description: "Find out more about Swagger"
