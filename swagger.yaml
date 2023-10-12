@@ -40,6 +40,9 @@ tags:
 - name: "game"
   description: "遊玩、玩法相關"
 
+- name: "suit"
+  description: "服裝"
+
 schemes:
 - "https"
 - "http"
@@ -170,6 +173,34 @@ paths:
         - rei_auth:
           - "read:account"
 
+  /account/forget-password:
+    post:
+      tags:
+        - "account"
+      summary: "忘記密碼"
+      description: ""
+      operationId: "forgetPassword"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema:
+            $ref: "#/definitions/forgetPasswordData"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/forgetPasswordResult"
+        400:
+          description: "signup failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
 # item
   /item/list: #開包包
     get:
@@ -283,11 +314,11 @@ paths:
       #       $ref: "#/definitions/ChipInfoData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipInfoResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -295,7 +326,7 @@ paths:
     get:
       tags:
         - "chip"
-      summary: "晶片資訊"
+      summary: "玩家晶片列表"
       description: ""
       operationId: "list"
       consumes:
@@ -311,11 +342,11 @@ paths:
             $ref: "#/definitions/ChipListData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipListResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -339,11 +370,11 @@ paths:
             $ref: "#/definitions/ChipObjData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipObjResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -351,7 +382,7 @@ paths:
     post:
       tags:
         - "chip"
-      summary: "晶片資訊"
+      summary: "晶片突破"
       description: ""
       operationId: "overlock"
       consumes:
@@ -367,11 +398,11 @@ paths:
             $ref: "#/definitions/ChipOverData"
       responses:
         200:
-          description: "upgrade successful"
+          description: "successful"
           schema:
             $ref: "#/definitions/ChipOverResult"
         400:
-          description: "upgrade failed"
+          description: "failed"
           schema:
             $ref: "#/definitions/BadRequest"
 
@@ -620,6 +651,60 @@ paths:
           schema:
             $ref: "#/definitions/BadRequest"
 
+
+  /suit/upgrade:
+    post:
+      tags:
+        - "suit"
+      summary: "服裝升級"
+      description: ""
+      operationId: "upgrade"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SuitUpgradeData"
+      responses:
+        200:
+          description: "select mode successful"
+          schema:
+            $ref: "#/definitions/SuitUpgradeRequest"
+        400:
+          description: "select mode failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+  /suit/obj:
+    post:
+      tags:
+        - "suit"
+      summary: "服裝物件查詢"
+      operationId: "obj"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/SuitObjData"
+      responses:
+        200:
+          description: "select mode successful"
+          schema:
+            $ref: "#/definitions/SuitObjRequest"
+        400:
+          description: "select mode failed"
+          schema:
+            $ref: "#/definitions/BadRequest"
+
+
+
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -716,6 +801,18 @@ definitions:
       stateMessage:
         type: "string"
 
+  forgetPasswordData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
+  forgetPasswordResult:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+
   # chip
   ChipUpgradeData: # 晶片強化資料
     type: "object"
@@ -779,17 +876,34 @@ definitions:
       upgradeCost:
         type: "array"
         items:
-          type: "object"
-          properties:
-              item_id:
-                type: "string"
+          example: item_id
       overlock:
           type: "array"   #[]
           items:
             type: "object"    #{a}
             properties:
-              attributeId:
-                type: "object"
+              atb0004:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    ability_id:
+                      type: string
+                    value:
+                      type: "array"
+                      items:
+                        type: "integer"
+              atb0005:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    ability_id:
+                      type: string
+                    value:
+                      type: "array"
+                      items:
+                        type: "integer"
 
   ChipListData:
     type: "object"
@@ -819,19 +933,19 @@ definitions:
     properties:
       token:
         type: "string"
+      objItemOid:
+        type: "string"
 
   ChipObjResult:
     type: "object"
     properties:
       itemId:
         type: "string"
-      name:
+      chipId:
         type: "string"
       exp:
         type: "integer"
       attribute:
-        type: "string"
-      category:
         type: "string"
 
   ChipOverData:
@@ -957,7 +1071,7 @@ definitions:
     properties:
       token:
         type: "string"
-      purchaseId:
+      poolId:
         type: "integer"
         format: "int"
       konpeito: #星星糖
@@ -1145,6 +1259,53 @@ definitions:
               type: "string"
             img:
               type: "string"
+
+  SuitUpgradeData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+      mu:
+        type: "object"
+        properties:
+          having:
+            type: "integer"
+          cost:
+            type: "integer"
+
+  SuitUpgradeRequest:
+    type: "object"
+    properties:
+      mu:
+        type: "integer"
+      expAfter:
+        type: "integer"
+
+  SuitObjData:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+      objItemOid:
+        type: "string"
+
+  SuitObjRequest:
+    type: "object"
+    properties:
+      itemId:
+        type: "string"
+      suitId:
+        type: "string"
+      life:
+        type: "integer"
+      defense:
+        type: "integer"
+      exp:
+        type: "integer"
+
+
 
 externalDocs:
   description: "Find out more about Swagger"
