@@ -200,8 +200,36 @@ paths:
           description: "signup failed"
           schema:
             $ref: "#/definitions/BadRequest"
-
-# item
+  
+  /new-player:
+    post:
+      tags:
+        - "account"
+      summary: "新玩家"
+      description: ""
+      operationId: "newPlayer"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: ""
+          required: true
+          schema: 
+            $ref: '#/definitions/NewPlayer'
+      responses: 
+        200:
+          description: "successful"
+          schema: 
+            $ref: "#/definitions/NewPlayerResult"
+        400:
+          description: "signup failed"
+          schema:
+            $ref: '#/definitions/BadRequest'
+        
+        # item
   /item/list: #開包包
     get:
       tags:
@@ -480,7 +508,7 @@ paths:
       description: "商店販賣物品清單"
       operationId: "getStoreList"
       consumes:
-        - "applictaion/json"
+        - "application/json"
       produces:
         - "application/json"
       parameters:
@@ -501,7 +529,7 @@ paths:
           description: "取得玩家現有星星糖數量驗證資料正確性"
       responses:
         200:
-          description: "get stroe list successful"
+          description: "get store list successful"
           schema:
             $ref: "#/definitions/StoreList"
         400:
@@ -804,7 +832,7 @@ definitions:
   forgetPasswordData:
     type: "object"
     properties:
-      token:
+      uid:
         type: "string"
 
   forgetPasswordResult:
@@ -1119,6 +1147,8 @@ definitions:
         items:
           type: "object"
           properties:
+            goodId:
+              type: "string"
             itemId:
               type: "string"
             itemName:
@@ -1129,18 +1159,22 @@ definitions:
               type: "integer"
             price:
               type: "integer"
+            costItem:
+              type: "string"
       konpeito:
         type: "integer"
         # 為了避免在向伺服器發送請求後竄改內容，因此會再回傳一次星星糖的數值"
+      mu:
+        type: "integer"
 
   Cart:
     type: "object"
     properties:
       token:
         type: "string"
-      itemId:
+      goodId:
         type: "integer"
-      itemNumber:
+      amount:
         type: "integer"
       mu:
         type: "integer"
