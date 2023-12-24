@@ -212,18 +212,18 @@ paths:
         - "application/json"
       produces:
         - "application/json"
-      parameters:
-        - name: "body"
-          in: "body"
-          description: ""
-          required: true
-          schema: 
-            $ref: '#/definitions/NewPlayer'
+      # parameters:
+      #   - name: "body"
+      #     in: "body"
+      #     description: ""
+      #     required: true
+          # schema: 
+          #   $ref: '#/definitions/NewPlayer'
       responses: 
         200:
           description: "successful"
-          schema: 
-            $ref: "#/definitions/NewPlayerResult"
+          # schema: 
+          #   $ref: "#/definitions/NewPlayerResult"
         400:
           description: "signup failed"
           schema:
@@ -849,8 +849,6 @@ definitions:
         type: "string"
       objItemOid:
         type: "integer"
-      typeId:
-        type: "integer"
       U:
         type: "array"
         items:
@@ -861,14 +859,7 @@ definitions:
             UNum:
               type: "integer"
       mu:
-        type: "array"
-        items:
-          type: "object"
-          properties:
-            having:
-              type: "integer"
-            cost:
-              type: "integer"
+        type: "integer"
 
   ChipUpgradeResult:
     type: "object"
@@ -949,7 +940,11 @@ definitions:
             properties:
               objItemOid:
                 type: "string"
+              chipId: 
+                type: "string"
               itemId:
+                type: "string"
+              name:
                 type: "string"
               exp:
                 type: "integer"
